@@ -1,18 +1,21 @@
-// Thêm hiệu ứng xuất hiện dần khi cuộn
-const sections = document.querySelectorAll('.section');
-
-window.addEventListener('scroll', () => {
-  sections.forEach(sec => {
-    const top = window.scrollY;
-    const offset = sec.offsetTop - 400;
-    const height = sec.offsetHeight;
-
-    if (top >= offset && top < offset + height) {
-      sec.style.opacity = 1;
-      sec.style.transform = 'translateY(0)';
-    } else {
-      sec.style.opacity = 0;
-      sec.style.transform = 'translateY(40px)';
-    }
-  });
+// Hiệu ứng cuộn mượt
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
 });
+
+// Hiệu ứng fade-in khi cuộn
+const elements = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.2 });
+
+elements.forEach(el => observer.observe(el));
